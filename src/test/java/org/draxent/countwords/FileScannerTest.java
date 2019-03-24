@@ -49,20 +49,12 @@ public class FileScannerTest {
     @Test
     public void testScanner_withQuotes() {
         FileScanner fileScanner = new FileScanner(createInputStreamFromString("'w1' \"w2\" 'w3 w4' \"w5 w6\""));
-        assertResult(fileScanner, Arrays.asList("w1", "w2", "w3", "w4", "w5", "w6"));
+        assertResult(fileScanner, Arrays.asList("w1", EMPTY, "w2", EMPTY, "w3", "w4", EMPTY, "w5", "w6"));
     }
 
     @Test
     public void testScanner_withOnlyApostrophe() {
         FileScanner fileScanner = new FileScanner(createInputStreamFromString("'"));
-        assertTrue(fileScanner.hasNext());
-        assertEquals(EMPTY, fileScanner.next());
-        assertFalse(fileScanner.hasNext());
-    }
-
-    @Test
-    public void testScanner_withOnlyOneQuote() {
-        FileScanner fileScanner = new FileScanner(createInputStreamFromString("\""));
         assertTrue(fileScanner.hasNext());
         assertEquals(EMPTY, fileScanner.next());
         assertFalse(fileScanner.hasNext());

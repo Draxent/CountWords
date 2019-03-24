@@ -6,7 +6,6 @@ import java.util.Scanner;
 class FileScanner {
 
     private static final char SINGLE_QUOTE = '\'';
-    private static final char DOUBLE_QUOTE = '"';
     private static final char HYPHEN = '-';
     private static final String EMPTY = "";
 
@@ -14,7 +13,7 @@ class FileScanner {
 
     FileScanner(InputStream inputStream) {
         this.scanner = new Scanner(inputStream);
-        this.scanner.useDelimiter("\\s+|,|!|:|\\.|;|\\?|--|\\(|\\)|\\[|]|\\{|}");
+        this.scanner.useDelimiter("\\s+|,|!|:|\\.|;|\\?|--|\\(|\\)|\\[|]|\\{|}|\"");
     }
 
     boolean hasNext() {
@@ -28,8 +27,6 @@ class FileScanner {
         } else if (word.length() == 1) {
             if (firstChar(word) == SINGLE_QUOTE) {
                 return EMPTY;
-            } else if (firstChar(word) == DOUBLE_QUOTE) {
-                return EMPTY;
             } else if (firstChar(word) == HYPHEN) {
                 return EMPTY;
             } else {
@@ -37,12 +34,12 @@ class FileScanner {
             }
         }
 
-        String wordWithoutSingleQuote = removeQuoteFromWord(word, SINGLE_QUOTE);
-        String wordWithoutDoubleQuote = removeQuoteFromWord(word, DOUBLE_QUOTE);
-        if (wordWithoutSingleQuote != null) {
-            return wordWithoutSingleQuote;
-        } else if (wordWithoutDoubleQuote != null) {
-            return wordWithoutDoubleQuote;
+        if (firstChar(word) == SINGLE_QUOTE && lastChar(word) == SINGLE_QUOTE) {
+            return word.substring(1, word.length() - 1);
+        } else if (firstChar(word) == SINGLE_QUOTE) {
+            return word.substring(1);
+        } else if (lastChar(word) == SINGLE_QUOTE) {
+            return word.substring(0, word.length() - 1);
         } else {
             return word;
         }
@@ -52,17 +49,7 @@ class FileScanner {
         scanner.close();
     }
 
-    private String removeQuoteFromWord(String word, char c) {
-        if (firstChar(word) == c && lastChar(word) == c) {
             return word.substring(1, word.length() - 1);
-        } else if (firstChar(word) == c) {
-            return word.substring(1);
-        } else if (lastChar(word) == c) {
-            return word.substring(0, word.length() - 1);
-        }
-        return null;
-    }
-
     private char firstChar(String word) {
         return word.charAt(0);
     }
