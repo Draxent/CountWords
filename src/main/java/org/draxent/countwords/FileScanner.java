@@ -49,7 +49,6 @@ class FileScanner {
         scanner.close();
     }
 
-            return word.substring(1, word.length() - 1);
     private char firstChar(String word) {
         return word.charAt(0);
     }
